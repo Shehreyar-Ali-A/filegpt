@@ -6,7 +6,7 @@ from django.core.files.storage import default_storage
 
 
 class UploadedFile(models.Model):
-    file = models.FileField(upload_to='uploads/')
+    file = models.FileField()
     upload_url = models.URLField(blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
@@ -17,7 +17,7 @@ class UploadedFile(models.Model):
         self.upload_url = self.file.url.split("?")[0]
         super().save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
-        if self.file and default_storage.exists(self.file.name):
-            self.file.delete(save=False)
-        super().delete(*args, **kwargs)
+    # def delete(self, *args, **kwargs):
+    #     if self.file and default_storage.exists(self.file.name):
+    #         self.file.delete(save=False)
+    #     super().delete(*args, **kwargs)

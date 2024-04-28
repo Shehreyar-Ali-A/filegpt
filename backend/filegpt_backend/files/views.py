@@ -5,13 +5,32 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import UploadedFile
 from .serializers import UploadedFileSerializer
+from chat.models import models
+from chat.serializer import ChatSerializer
+from .file_processor import process_file
 
 class FilesView(APIView):
     def post(self, request, format=None):
+        """
+        This function is responsible for the following things
+            1. Uploading the file to a local dir for temp storage
+            2. Create a new chat object in the database
+            3. Preforming OCR (if required)
+            4. Extracting text from the file 
+            5. Creating chunks
+            6. Creating the embeddings from the chunks
+            7. Storing the embeddings in pinecone db
+        """
         file_serializer = UploadedFileSerializer(data=request.data)
 
         if file_serializer.is_valid():
-            file_serializer.save()
+            file_instance = file_serializer.save()
+            print("\n\n",file_instance.id,"\n\n")
+
+            
+            process_file(file_instance.id)
+
+
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -22,6 +41,11 @@ class FilesView(APIView):
         file_obj.delete()
 
         return JsonResponse({'message': 'File deleted successfully'}, status=204)
+    
+
+
+            
+
 
 class HealthCheck(APIView):
     def get(self, request):
