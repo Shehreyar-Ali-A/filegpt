@@ -1,14 +1,13 @@
 from django.db import models
 
 class Chat(models.Model):
-    file_name = models.CharField(max_length=255, blank=False)
     file_url = models.URLField(blank=False)
     created_at = models.DateTimeField(auto_now_add=True, blank=False)
     user_id = models.CharField(max_length=255, blank=False)
     file_key = models.CharField(max_length=255, blank=False)
 
     def __str__(self):
-        return self.file_name
+        return self.file_key
     
 class Message(models.Model):
     ROLE_CHOICES = (

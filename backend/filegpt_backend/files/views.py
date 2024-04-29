@@ -5,8 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import UploadedFile
 from .serializers import UploadedFileSerializer
-from chat.models import models
-from chat.serializer import ChatSerializer
+from chat.serializers import ChatSerializer
 from .file_processor import process_file
 
 class FilesView(APIView):
@@ -26,14 +25,24 @@ class FilesView(APIView):
         if file_serializer.is_valid():
             file_instance = file_serializer.save()
             print("\n\n",file_instance.id,"\n\n")
-
-            
-            process_file(file_instance.id)
-
-
-            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+            process_file(file_instance.id)            
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        chat_serializer = ChatSerializer(data={
+            'file_url': file_instance.upload_url,
+            'user_id': file_instance.user_id,
+            'file_key': str(file_instance.file)
+        })
+
+        if chat_serializer.is_valid():
+            chat_serializer.save()
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+
+
         
     def delete(self, request, file_id, format=None):
         file_obj = get_object_or_404(UploadedFile, pk=file_id)
