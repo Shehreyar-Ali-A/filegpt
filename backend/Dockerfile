@@ -11,6 +11,9 @@ WORKDIR /code
 # Copy the dependencies file to the working directory
 COPY poetry.lock pyproject.toml /code/
 
+# Install tesseract
+RUN apt update && apt install -y tesseract-ocr && apt install -y libtesseract-dev
+
 # Install Poetry and dependencies
 RUN pip install poetry && poetry install --no-root --no-dev
 
@@ -21,4 +24,4 @@ COPY . /code/
 EXPOSE 8080
 
 # Run the Django development server
-CMD ["poetry", "run", "python3", "code/manage.py", "runserver", "0.0.0.0:8080"]
+CMD ["poetry", "run", "python3", "filegpt_backend/manage.py", "runserver", "0.0.0.0:8080"]
