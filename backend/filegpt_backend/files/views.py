@@ -36,11 +36,13 @@ class FilesView(APIView):
         })
 
         if chat_serializer.is_valid():
-            chat_serializer.save()
+            chat_instance = chat_serializer.save()
+            response_data = file_serializer.data
+            response_data['chat_id'] = chat_instance.id
         else:
-            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(chat_serializer.errors, status=status.HTTP_400_BAD_REQUEST)            
 
-        return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(response_data, status=status.HTTP_201_CREATED)
 
 
         
