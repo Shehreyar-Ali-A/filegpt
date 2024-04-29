@@ -17,9 +17,6 @@ class UserChats(APIView):
     def get(self, request, user_id):
         chats = Chat.objects.filter(user_id=user_id)
         serializer = ChatSerializer(chats, many=True)
-
-        print("\n\n SIMILARITY SEARCH",similarity_search("tell me about his experince at elphinstone","shehreyar/shehreyar_ali__cv.pdf"),"\n\n")
-
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ChatMessages(APIView):
