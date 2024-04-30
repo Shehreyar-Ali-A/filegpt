@@ -1,8 +1,8 @@
 import ChatComponent from "@/components/ChatComponent";
 import ChatSideBar from "@/components/ChatSideBar";
 import PDFViewer from "@/components/PDFViewer";
-import { getChatFromChatAndUserId, getChatFromUserId } from "@/lib/AxiosRequests";
 import { auth } from "@clerk/nextjs/server";
+import axios from "axios";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -19,11 +19,17 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
     return redirect("/sign-in");
   }
 
-  const currentChat = await getChatFromChatAndUserId(userId, parseInt(chatId))
-  const chats = await getChatFromUserId(userId)
-  if (!chats || !currentChat) {
+  if (!chatId) {
     return redirect("/");
   }
+
+  const chatsRes = await axios.get(`http://localhost:3000/api/chat-user/${userId}`);
+  const chats = chatsRes.data
+  if (!chats) {
+    return redirect("/");
+  }
+
+  const currentChat = chats.find((chat: any) => chat.id === parseInt(chatId))
 
   const parts = currentChat?.file_url.split('/');
   parts[parts.length - 1] = currentChat?.file_key;

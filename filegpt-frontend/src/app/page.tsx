@@ -4,7 +4,8 @@ import { auth } from "@clerk/nextjs/server"
 import Link from "next/link";
 import { ArrowRight, LogIn } from "lucide-react";
 import FileUpload from "@/components/FileUpload";
-import { getChatFromUserId } from "@/lib/AxiosRequests";
+import axios from "axios";
+import React from "react";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -13,9 +14,9 @@ export default async function Home() {
   let firstChat: any;
 
   if (userId) {
-    firstChat = await getChatFromUserId(userId);
-    if (firstChat) {
-      firstChat = firstChat[0];
+    const res = await axios.get(`http://localhost:3000/api/chat-user/${userId}`);
+    if (res.data) {
+      firstChat = res.data[0];
     }
   }
 

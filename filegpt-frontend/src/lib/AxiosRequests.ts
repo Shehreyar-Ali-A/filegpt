@@ -2,20 +2,20 @@ import axios, { AxiosResponse } from 'axios';
 const BASE_URL = process.env.NEXT_PUBLIC_DJANGO_URL
 
 export interface UploadedFile {
-    id: number;
-    user_id: string;
-    file: string;
-    uploaded_at: string;
-    upload_url: string;
-    chat_id: number;
+  id: number;
+  user_id: string;
+  file: string;
+  uploaded_at: string;
+  upload_url: string;
+  chat_id: number;
 }
 
 export interface Chat {
-    id: number;
-    file_url: string;
-    created_at: string;
-    user_id: string;
-    file_key: string;
+  id: number;
+  file_url: string;
+  created_at: string;
+  user_id: string;
+  file_key: string;
 }
 
 interface MyMessages {
@@ -36,13 +36,9 @@ export interface Message {
 
 
 
-export async function uploadFile(file: File, user_id: string): Promise<UploadedFile> {
+export async function uploadFile(formdataObj: FormData): Promise<UploadedFile> {
   try {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('user_id', user_id);
-    console.log("\n\n BASE URLS:", BASE_URL)
-    const response: AxiosResponse<UploadedFile> = await axios.post(`${BASE_URL}/api/files/upload/`, formData, {
+    const response: AxiosResponse<UploadedFile> = await axios.post(`${BASE_URL}/api/files/upload/`, formdataObj, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -52,17 +48,6 @@ export async function uploadFile(file: File, user_id: string): Promise<UploadedF
   } catch (error) {
     // Handle error
     console.error('Error uploading file:', error);
-    throw error;
-  }
-}
-
-export async function getChatFromChatAndUserId(user_id: string, chat_id: number): Promise<Chat> {
-  try {
-    const response: AxiosResponse<Chat> = await axios.get(`${BASE_URL}/api/chats/chat/${user_id}/${chat_id}/`);
-    return response.data;
-  } catch (error) {
-    // Handle error
-    console.error('Error getting chat:', error);
     throw error;
   }
 }

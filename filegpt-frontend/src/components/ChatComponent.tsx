@@ -7,21 +7,19 @@ import { Send } from "lucide-react";
 import MessageList from "./MessageList";
 import { useQuery } from "@tanstack/react-query";
 import { Message } from "ai";
-import { getMessagesFromChatId } from "@/lib/AxiosRequests";
+import axios from "axios";
 
 type Props = { chatId: number };
 
 const ChatComponent = ({ chatId }: Props) => {
-
-  const BASE_URL = process.env.NEXT_PUBLIC_DJANGO_URL
 
   const [ sending, setSending ] = React.useState(false)
 
   const { data, isLoading } = useQuery({
     queryKey: ["chat", chatId],
     queryFn: async () => {
-      const response = await getMessagesFromChatId(chatId)
-      return response;
+      const response = await axios.get(`/api/chat/${chatId}`)
+      return response.data as any[];
     },
   });
 

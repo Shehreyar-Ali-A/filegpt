@@ -19,14 +19,6 @@ const MessageList = ({ messages, isLoading, isTyping }: Props) => {
   }
   if (!messages) return <></>;
 
-  // if (isTyping == 1) {
-  //   const temp = messages[-1]
-  //   temp.content = 'FileGPT is thinking...'
-  //   messages.push(temp)
-  // } else if (isTyping == 2) {
-  //   messages.pop()
-  // }
-
   console.log("IS TYPING", isTyping)
   return (
     <div className="flex flex-col gap-2 px-4">

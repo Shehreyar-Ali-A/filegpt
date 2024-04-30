@@ -22,10 +22,14 @@ const FileUpload = ({user_id}: Props) => {
   const handleFileUpload = async (file: File) => {
     try {
       setUploading(true);
-      const response = await uploadFile(file, user_id)
+      const formData = new FormData()
+      formData.append('file', file);
+      formData.append('user_id', user_id);
+      const response = await axios.post("http://localhost:3000/api/upload-file", formData)
+
       return {
-        chat_id: response.chat_id,
-        file_key: `${response.user_id}/${file.name}`,
+        chat_id: response.data.chat_id,
+        file_key: `${response.data.user_id}/${file.name}`,
         file_name: file.name
       }
 
@@ -33,7 +37,7 @@ const FileUpload = ({user_id}: Props) => {
       console.error(error);
       throw error; // Rethrow the error to handle it outside
     } finally {
-      // setUploading(false);
+      setUploading(false);
     }
   };
 
