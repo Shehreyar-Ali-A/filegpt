@@ -38,7 +38,7 @@ export interface Message {
 
 export async function uploadFile(formdataObj: FormData): Promise<UploadedFile> {
   try {
-    const response: AxiosResponse<UploadedFile> = await axios.post(`${BASE_URL}/api/files/upload/`, formdataObj, {
+    const response: AxiosResponse<UploadedFile> = await axios.post(`${BASE_URL}/api/files/upload/1`, formdataObj, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
