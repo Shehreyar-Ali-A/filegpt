@@ -1,7 +1,7 @@
+import { NextRequest } from "next/server";
 import { getChatFromUserId } from "../../../../lib/AxiosRequests"
-import { NextApiRequest } from 'next';
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
     const arr = req.url!.split("/")
     const userId = arr[arr.length - 1]
     const response: any = await getChatFromUserId(userId)
