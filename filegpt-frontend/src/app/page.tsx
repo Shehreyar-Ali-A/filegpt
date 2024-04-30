@@ -14,7 +14,7 @@ export default async function Home() {
   let firstChat: any;
 
   if (userId) {
-    const res = await axios.get(`/api/chat-user/${userId}`);
+    const res = await axios.get(`http://localhost:3030/api/chat-user/${userId}`);
     if (res.data) {
       firstChat = res.data[0];
     }

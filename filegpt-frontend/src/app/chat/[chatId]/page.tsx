@@ -23,7 +23,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
     return redirect("/");
   }
 
-  const chatsRes = await axios.get(`/api/chat-user/${userId}`);
+  const chatsRes = await axios.get(`http://localhost:3030/api/chat-user/${userId}`);
   const chats = chatsRes.data
   if (!chats) {
     return redirect("/");
