@@ -15,7 +15,7 @@ COPY poetry.lock pyproject.toml /code/
 RUN apt update && apt install -y tesseract-ocr && apt install -y libtesseract-dev
 
 # Install Poetry and dependencies
-RUN pip install poetry && poetry install --no-root --no-dev
+RUN pip install poetry && poetry install --no-root --no-dev && poetry show
 
 # Copy the current directory contents into the container at /code
 COPY . /code/
