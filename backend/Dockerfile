@@ -22,18 +22,6 @@ COPY . /code/
 
 # Expose both port 8080 for HTTP and port 443 for HTTPS
 EXPOSE 8080
-EXPOSE 443
 
-# Install Nginx and copy SSL certificate files
-RUN apt-get update && apt-get install -y nginx openssl
-COPY nginx-selfsigned.key /etc/ssl/private/nginx-selfsigned.key
-COPY nginx-selfsigned.crt /etc/ssl/certs/nginx-selfsigned.crt
-
-# Remove the default Nginx configuration file
-RUN rm /etc/nginx/sites-enabled/default
-
-# Copy the Nginx configuration file for the Django app
-COPY nginx/nginx.conf /etc/nginx/sites-enabled/
-
-# Start Nginx and run the Django development server
-CMD ["nginx", "-g", "daemon off;"]
+# Run the Django development server
+CMD ["poetry", "run", "python3", "filegpt_backend/manage.py", "runserver", "0.0.0.0:8080"]
