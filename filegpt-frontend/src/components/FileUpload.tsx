@@ -25,11 +25,12 @@ const FileUpload = ({user_id}: Props) => {
       const formData = new FormData()
       formData.append('file', file);
       formData.append('user_id', user_id);
-      const response = await axios.post("http://localhost:3030/api/upload-file", formData)
+      // const response = await axios.post("http://localhost:3030/api/upload-file", formData)
+      const response = await uploadFile(formData)
 
       return {
-        chat_id: response.data.chat_id,
-        file_key: `${response.data.user_id}/${file.name}`,
+        chat_id: response.chat_id,
+        file_key: `${response.user_id}/${file.name}`,
         file_name: file.name
       }
 
