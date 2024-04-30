@@ -8,8 +8,8 @@ from .models import Chat, Message
 from .serializers import ChatSerializer, MessageSerializer
 
 class ChatDetail(APIView):
-    def get(self, request, chat_id):
-        chat_object = get_object_or_404(Chat, pk=chat_id)
+    def get(self, request, user_id, chat_id):
+        chat_object = get_object_or_404(Chat, pk=chat_id, user_id=user_id)
         serializer = ChatSerializer(chat_object)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
