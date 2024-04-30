@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from pinecone import Pinecone
 import openai
+import re
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_pinecone import PineconeVectorStore
 from langchain.chains.question_answering import load_qa_chain
@@ -13,6 +14,8 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 pc = Pinecone(api_key=os.getenv('PINECONE_API_KEY'))
 pinecone_index_name=os.getenv('PINECONE_DB_INDEX')
 
+def replace_with_xs(match):
+    return 'X' * len(match.group())
 
 def similarity_search(question, file_key):
     embeddings = OpenAIEmbeddings()
@@ -33,6 +36,9 @@ def process_question(question, file_key):
     with get_openai_callback() as cb:
         response = chain.run(input_documents=docs, question=question)
         print(cb)
+
+    number_pattern = re.compile(r'\b\d+-\d+-\d+\b')
+    text_with_no_numbers = number_pattern.sub(replace_with_xs, response)
     
-    return response
+    return text_with_no_numbers
 
