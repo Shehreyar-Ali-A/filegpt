@@ -21,7 +21,7 @@ RUN pip install poetry && poetry install --no-root --no-dev
 COPY . /code/
 
 # Expose the port on which your Django app runs
-EXPOSE 8080
+EXPOSE 443
 
 # Run the Django development server
 CMD ["poetry", "run", "python3", "filegpt_backend/manage.py", "runserver", "0.0.0.0:8080"]

@@ -33,7 +33,7 @@ const FileUpload = ({user_id}: Props) => {
       console.error(error);
       throw error; // Rethrow the error to handle it outside
     } finally {
-      setUploading(false);
+      // setUploading(false);
     }
   };
 

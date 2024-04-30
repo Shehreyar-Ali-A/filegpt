@@ -4,24 +4,20 @@ import { auth } from "@clerk/nextjs/server"
 import Link from "next/link";
 import { ArrowRight, LogIn } from "lucide-react";
 import FileUpload from "@/components/FileUpload";
-
-// import { db } from "@/lib/db";
-// import { chats } from "@/lib/db/schema";
-// import { eq } from "drizzle-orm";
+import { getChatFromUserId } from "@/lib/AxiosRequests";
 
 export default async function Home() {
   const { userId } = await auth();
-  // const userId = "hello"
   const isAuth = !!userId;
 
   let firstChat: any;
 
-  // if (userId) {
-  //   firstChat = await db.select().from(chats).where(eq(chats.userId, userId));
-  //   if (firstChat) {
-  //     firstChat = firstChat[0];
-  //   }
-  // }
+  if (userId) {
+    firstChat = await getChatFromUserId(userId);
+    if (firstChat) {
+      firstChat = firstChat[0];
+    }
+  }
 
   return (
     <div className="w-screen min-h-screen bg-gradient-to-r from-indigo-200 via-red-200 to-yellow-100">
