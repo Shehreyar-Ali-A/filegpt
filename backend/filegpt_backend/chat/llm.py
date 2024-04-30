@@ -37,7 +37,7 @@ def process_question(question, file_key):
         response = chain.run(input_documents=docs, question=question)
         print(cb)
 
-    number_pattern = re.compile(r'\b\d+-\d+-\d+\b')
+    number_pattern = re.compile(r'\b\d+-*\d+\b')
     text_with_no_numbers = number_pattern.sub(replace_with_xs, response)
     
     return text_with_no_numbers
