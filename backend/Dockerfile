@@ -23,5 +23,7 @@ COPY . /code/
 # Expose both port 8080 for HTTP and port 443 for HTTPS
 EXPOSE 8080
 
+RUN echo $PYTHONPATH
+
 # Run the Django development server
-CMD ["poetry", "run", "python3", "filegpt_backend/manage.py", "runserver", "0.0.0.0:8080"]
+CMD ["poetry", "run", "python", "filegpt_backend/manage.py", "runserver", "0.0.0.0:8080"]
