@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    command: poetry run python3 filegpt_backend/manage.py runserver 0.0.0.0:8080
+    networks:
+      - docker_network
+    expose:
+      - 8080
+
+  frontend:
+    build:
+      context: ./filegpt-frontend
+    env_file:
+      - ./filegpt-frontend/.env
+    ports:
+      - "3030:3030"
+    command: npm start
+    networks:
+      - docker_network
+
+networks:
+  docker_network:
+    driver: bridge
